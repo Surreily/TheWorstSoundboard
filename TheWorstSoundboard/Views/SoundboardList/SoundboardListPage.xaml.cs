@@ -36,9 +36,21 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardList {
 
         #region Event handlers
 
-        private async void OnCreateButtonClicked(object sender, EventArgs e) {
+        private async void CreateButton_Clicked(object sender, EventArgs e) {
             await CreateSoundboard();
             OnPropertyChanged(nameof(ViewModel.SoundboardModels));
+        }
+
+        private async void SoundboardModelsListView_ItemTapped(object sender, ItemTappedEventArgs e) {
+            SoundboardModel model = (SoundboardModel)e.Item;
+
+            Dictionary<string, object> navigationParameter = new Dictionary<string, object> {
+                {
+                    "SoundboardFolderPath", "/Soundboards/Dank Memes"
+                },
+            };
+
+            await Shell.Current.GoToAsync("Soundboards/Edit", navigationParameter);
         }
 
         #endregion

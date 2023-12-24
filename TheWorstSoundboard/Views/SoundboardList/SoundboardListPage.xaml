@@ -10,6 +10,7 @@
             SelectionMode="None"
             HasUnevenRows="True"
             SeparatorVisibility="None"
+            ItemTapped="SoundboardModelsListView_ItemTapped"
             Footer="">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -56,7 +57,7 @@
         <HorizontalStackLayout>
             <Button
                 Text="Add"
-                Clicked="OnCreateButtonClicked" />
+                Clicked="CreateButton_Clicked" />
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
