@@ -2,13 +2,14 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
     [QueryProperty(nameof(SoundboardName), "SoundboardName")]
     [QueryProperty(nameof(SoundName), "SoundName")]
     public partial class SoundEditPage : ContentPage {
-        public SoundEditPage() {
+        public SoundEditPage(
+            SoundEditPageViewModel viewModel) {
+
             InitializeComponent();
-
-            ViewModel = new SoundEditPageViewModel();
-
-            BindingContext = ViewModel;
+            BindingContext = viewModel;
         }
+
+        public SoundEditPageViewModel ViewModel => (SoundEditPageViewModel)BindingContext;
 
         public string? SoundboardName {
             get => ViewModel.SoundboardName;
@@ -19,8 +20,6 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
             get => ViewModel.SoundName;
             set => ViewModel.SoundName = value;
         }
-
-        public SoundEditPageViewModel ViewModel { get; set; }
 
         private async void SelectSoundButton_Clicked(object sender, EventArgs e) {
             await ViewModel.SelectSoundFileAsync();

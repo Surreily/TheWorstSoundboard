@@ -1,36 +1,13 @@
 ﻿using Surreily.TheWorstSoundboard.Model;
 
-namespace Surreily.TheWorstSoundboard.Utility {
-    public static class LocalStorage {
-        public static async Task AddFileAsync(Stream stream, string fileName, string soundboardName, string soundName) {
-            string destinationFolderPath = Path.Combine(
-                FileSystem.Current.AppDataDirectory,
-                soundboardName);
+namespace Surreily.TheWorstSoundboard.Storage.Sound {
+    public class LocalSoundStorage : ISoundStorage {
+        private const string SoundboardsFolderName = "Soundboards";
 
-            Directory.CreateDirectory(destinationFolderPath);
-
-            string destinationFilePath = Path.Combine(
-                destinationFolderPath,
-                soundName + Path.GetExtension(fileName));
-
-            using (FileStream fileStream = new FileStream(destinationFilePath, FileMode.Create)) {
-                await stream.CopyToAsync(fileStream);
-            }
-        }
-
-        public static List<SoundboardModel> GetSoundboardModels() {
-            string soundboardsFolderPath = FileSystem.Current.AppDataDirectory;
-
-            return Directory.GetDirectories(soundboardsFolderPath)
-                .Select(soundboardFolderPath => new SoundboardModel {
-                    Name = Path.GetFileName(soundboardFolderPath),
-                })
-                .ToList();
-        }
-
-        public static IList<SoundModel> GetSoundModels(string soundboardName) {
+        public IList<SoundModel> GetSoundModels(string soundboardName) {
             string soundboardFolderPath = Path.Combine(
                 FileSystem.Current.AppDataDirectory,
+                SoundboardsFolderName,
                 soundboardName);
 
             IEnumerable<string> fileNames = Directory.GetFiles(soundboardFolderPath)

@@ -6,15 +6,14 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             set => ViewModel.SoundboardName = value;
         }
 
-        public SoundboardEditPage() {
+        public SoundboardEditPage(
+            SoundboardEditPageViewModel viewModel) {
+
             InitializeComponent();
-
-            ViewModel = new SoundboardEditPageViewModel();
-
-            BindingContext = ViewModel;
+            BindingContext = viewModel;
         }
 
-        public SoundboardEditPageViewModel ViewModel { get; set; }
+        public SoundboardEditPageViewModel ViewModel => (SoundboardEditPageViewModel)BindingContext;
 
         protected override void OnNavigatedTo(NavigatedToEventArgs args) {
             base.OnNavigatedTo(args);

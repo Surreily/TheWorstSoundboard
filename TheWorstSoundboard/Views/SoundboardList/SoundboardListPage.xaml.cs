@@ -2,36 +2,31 @@ using Surreily.TheWorstSoundboard.Model;
 
 namespace Surreily.TheWorstSoundboard.Views.SoundboardList {
     public partial class SoundboardListPage : ContentPage {
-        public SoundboardListPageViewModel ViewModel { get; set; }
+        public SoundboardListPage(
+            SoundboardListPageViewModel viewModel) {
 
-        public SoundboardListPage() {
             InitializeComponent();
+            BindingContext = viewModel;
+        }
 
-            ViewModel = new SoundboardListPageViewModel();
+        public SoundboardListPageViewModel ViewModel => (SoundboardListPageViewModel)BindingContext;
 
-            for (int i = 1; i <= 5; i++) {
-                ViewModel.SoundboardModels.Add(new SoundboardModel {
-                    Title = $"Soundboard {i}",
-                });
-            }
-
-            BindingContext = ViewModel;
+        protected override void OnNavigatedTo(NavigatedToEventArgs args) {
+            ViewModel.LoadSoundboards();
         }
 
         public async Task CreateSoundboard() {
-            string title = await DisplayPromptAsync(
+            string name = await DisplayPromptAsync(
                 "Create Soundboard",
                 "Enter a title for your new soundboard.");
 
-            title = title.Trim();
+            name = name.Trim();
 
-            if (string.IsNullOrWhiteSpace(title)) {
+            if (string.IsNullOrWhiteSpace(name)) {
                 return;
             }
 
-            ViewModel.SoundboardModels.Add(new SoundboardModel {
-                Title = title,
-            });
+            ViewModel.CreateSoundboard(name);
         }
 
         #region Event handlers
