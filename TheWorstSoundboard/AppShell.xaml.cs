@@ -1,4 +1,5 @@
 ﻿using Surreily.TheWorstSoundboard.Views.SoundboardEdit;
+using Surreily.TheWorstSoundboard.Views.SoundEdit;
 
 namespace Surreily.TheWorstSoundboard {
     public partial class AppShell : Shell {
@@ -6,6 +7,7 @@ namespace Surreily.TheWorstSoundboard {
             InitializeComponent();
 
             Routing.RegisterRoute("Soundboards/Edit", typeof(SoundboardEditPage));
+            Routing.RegisterRoute("Sounds/Edit", typeof(SoundEditPage));
         }
     }
 }
