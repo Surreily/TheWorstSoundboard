@@ -5,6 +5,8 @@
     x:Class="Surreily.TheWorstSoundboard.Views.SoundboardEdit.SoundboardEditPage"
     Title="SoundboardEditPage">
     <VerticalStackLayout>
-        
+        <Button
+            Text="TODO: Add list of items to click"
+            Clicked="TemporaryButton_Clicked" />
     </VerticalStackLayout>
 </ContentPage>
