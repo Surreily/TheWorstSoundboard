@@ -7,9 +7,20 @@
     <VerticalStackLayout>
         <Entry
             IsEnabled="False"
-            Text="{Binding ViewModel.SoundFileName}" />
+            Text="{Binding ViewModel.SelectedSoundFileName}" />
         <Button
             Text="Select"
             Clicked="SelectSoundButton_Clicked" />
+
+        <Entry
+            IsEnabled="False"
+            Text="{Binding ViewModel.SelectedImageFileName}" />
+        <Button
+            Text="Select"
+            Clicked="SelectImageButton_Clicked" />
+
+        <Button
+            Text="Save"
+            Clicked="SaveButton_Click" />
     </VerticalStackLayout>
 </ContentPage>

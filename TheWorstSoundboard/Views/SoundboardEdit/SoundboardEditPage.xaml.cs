@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
     [QueryProperty(nameof(SoundboardFolderPath), "SoundboardFolderPath")]
     public partial class SoundboardEditPage : ContentPage {
