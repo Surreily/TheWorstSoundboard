@@ -1,15 +1,18 @@
-﻿namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
+﻿using Surreily.TheWorstSoundboard.Utility;
+
+namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
     public class SoundEditPageViewModel {
-        private string soundboardName;
-        private string soundName;
+        private string? soundboardName;
+        private string? soundName;
         private string selectedSoundFilePath;
         private string selectedImageFilePath;
+        private FileResult? selectedSoundFileResult;
 
         public SoundEditPageViewModel() {
             SoundName = "New Sound";
         }
 
-        private string SoundboardName {
+        public string? SoundboardName {
             get => soundboardName;
             set {
                 if (soundboardName != value) {
@@ -19,7 +22,7 @@
             }
         }
 
-        public string SoundName {
+        public string? SoundName {
             get => soundName;
             set {
                 if (soundName != value) {
@@ -55,12 +58,12 @@
 
         public string NewSoundFilePath => Path.Combine(
             FileSystem.Current.AppDataDirectory,
-            SoundboardName,
+            SoundboardName!,
             Path.GetFileName(selectedSoundFilePath));
 
         public string NewImageFilePath => Path.Combine(
             FileSystem.Current.AppDataDirectory,
-            SoundboardName,
+            SoundboardName!,
             Path.GetFileName(selectedImageFilePath));
 
         public async Task SelectSoundFileAsync() {
@@ -81,6 +84,7 @@
                 }
 
                 selectedSoundFilePath = fileResult.FullPath;
+                selectedSoundFileResult = fileResult;
             } catch (Exception ex) {
                 // TODO: Handle exception.
                 throw;
@@ -93,7 +97,15 @@
         }
 
         public async Task SaveAsync() {
-            File.Copy(SelectedSoundFilePath, NewSoundFilePath, true);
+            if (SoundboardName == null || SoundName == null) {
+                // TODO: Show error message.
+                return;
+            }
+
+            using (Stream stream = await selectedSoundFileResult!.OpenReadAsync()) {
+                string extension = Path.GetExtension(selectedSoundFilePath);
+                await LocalStorage.AddFileAsync(stream, extension, SoundboardName, SoundName);
+            }
         }
     }
 }
