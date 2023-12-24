@@ -19,21 +19,6 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             InitializeComponent();
         }
 
-        protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null) {
-            base.OnPropertyChanged(propertyName);
-
-            if (propertyName == nameof(SoundboardFolderPath)) {
-                if (SoundboardFolderPath != null) {
-                    try {
-                        await FilePicker.PickAsync();
-                    } catch (Exception ex) {
-                        await DisplayAlert("Error", ex.Message, "Bleh"); // TODO: Make this more "professional".
-                    }
-                    
-                }
-            }
-        }
-
         private async void TemporaryButton_Clicked(object sender, EventArgs e) {
             // TODO: Remove this button and method!
 
