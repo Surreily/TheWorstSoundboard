@@ -1,20 +1,25 @@
 namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
-    [QueryProperty(nameof(SoundboardFolderPath), "SoundboardFolderPath")]
+    [QueryProperty(nameof(SoundboardName), "SoundboardName")]
     public partial class SoundboardEditPage : ContentPage {
-        private string soundboardFolderPath;
-
-        public string SoundboardFolderPath {
-            get => soundboardFolderPath;
-            set {
-                if (soundboardFolderPath != value) {
-                    soundboardFolderPath = value;
-                    OnPropertyChanged();
-                }
-            }
+        public string? SoundboardName {
+            get => ViewModel.SoundboardName;
+            set => ViewModel.SoundboardName = value;
         }
 
         public SoundboardEditPage() {
             InitializeComponent();
+
+            ViewModel = new SoundboardEditPageViewModel();
+
+            BindingContext = ViewModel;
+        }
+
+        public SoundboardEditPageViewModel ViewModel { get; set; }
+
+        protected override void OnNavigatedTo(NavigatedToEventArgs args) {
+            base.OnNavigatedTo(args);
+
+            ViewModel.LoadSoundboard();
         }
 
         private async void TemporaryButton_Clicked(object sender, EventArgs e) {
@@ -22,7 +27,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "SoundboardName", "Dank Memes" },
-                { "SoundName", "Sad Violin" }
+                { "SoundName", "Sad Violin" },
             };
 
             await Shell.Current.GoToAsync("Sounds/Edit", parameters);

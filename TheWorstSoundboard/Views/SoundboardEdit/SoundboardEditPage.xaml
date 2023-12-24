@@ -3,10 +3,27 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Surreily.TheWorstSoundboard.Views.SoundboardEdit.SoundboardEditPage"
-    Title="SoundboardEditPage">
+    Title="Soundboard">
     <VerticalStackLayout>
         <Button
             Text="TODO: Add list of items to click"
             Clicked="TemporaryButton_Clicked" />
+        <ListView
+            ItemsSource="{Binding SoundModels}"
+            SelectionMode="None"
+            HasUnevenRows="True"
+            SeparatorVisibility="None"
+            Footer="">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <HorizontalStackLayout>
+                            <Label Text="{Binding Name}" />
+                            <Label Text="Lololololol" />
+                        </HorizontalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </VerticalStackLayout>
 </ContentPage>

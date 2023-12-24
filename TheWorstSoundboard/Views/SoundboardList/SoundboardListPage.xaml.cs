@@ -44,13 +44,12 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardList {
         private async void SoundboardModelsListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             SoundboardModel model = (SoundboardModel)e.Item;
 
-            Dictionary<string, object> navigationParameter = new Dictionary<string, object> {
-                {
-                    "SoundboardFolderPath", "/Soundboards/Dank Memes"
-                },
+            // TODO: Pass in correct soundboard name.
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "SoundboardName", "Dank Memes" },
             };
 
-            await Shell.Current.GoToAsync("Soundboards/Edit", navigationParameter);
+            await Shell.Current.GoToAsync("Soundboards/Edit", parameters);
         }
 
         #endregion
