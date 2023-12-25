@@ -4,11 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Surreily.TheWorstSoundboard.Views.SoundboardEdit.SoundboardEditPage"
     Title="Soundboard">
-    <VerticalStackLayout>
-        <Button
-            Text="TODO: Add list of items to click"
-            Clicked="TemporaryButton_Clicked" />
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
         <ListView
+            Grid.Row="0"
             ItemsSource="{Binding SoundModels}"
             SelectionMode="None"
             HasUnevenRows="True"
@@ -19,11 +23,15 @@
                     <ViewCell>
                         <HorizontalStackLayout>
                             <Label Text="{Binding Name}" />
-                            <Label Text="Lololololol" />
                         </HorizontalStackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </VerticalStackLayout>
+
+        <Button
+            Grid.Row="1"
+            Text="Add"
+            Clicked="TemporaryButton_Clicked" />
+    </Grid>
 </ContentPage>

@@ -1,14 +1,21 @@
-﻿using Surreily.TheWorstSoundboard.Utility;
+﻿using Surreily.TheWorstSoundboard.Storage.Sound;
 
 namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
-    public class SoundEditPageViewModel {
+    public class SoundEditPageViewModel : ViewModelBase {
+        private readonly ISoundStorage soundStorage;
+
         private string? soundboardName;
         private string? soundName;
-        private string selectedSoundFilePath;
-        private string selectedImageFilePath;
+        private string? selectedSoundFilePath;
+        private string? selectedImageFilePath;
         private FileResult? selectedSoundFileResult;
+        private FileResult? selectedImageFileResult;
 
-        public SoundEditPageViewModel() {
+        public SoundEditPageViewModel(
+            ISoundStorage soundStorage) {
+
+            this.soundStorage = soundStorage;
+
             SoundName = "New Sound";
         }
 
@@ -17,7 +24,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
             set {
                 if (soundboardName != value) {
                     soundboardName = value;
-                    // TODO: Notify property changed.
+                    OnPropertyChanged(nameof(SoundboardName));
                 }
             }
         }
@@ -27,44 +34,36 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
             set {
                 if (soundName != value) {
                     soundName = value;
-                    // TODO: Notify property changed.
+                    OnPropertyChanged(nameof(SoundName));
                 }
             }
         }
 
-        public string SelectedSoundFilePath {
+        public string? SelectedSoundFilePath {
             get => selectedSoundFilePath;
             set {
                 if (selectedSoundFilePath != value) {
                     selectedSoundFilePath = value;
-                    // TODO: Notify property changed.
+                    OnPropertyChanged(nameof(SelectedSoundFilePath));
+                    OnPropertyChanged(nameof(SelectedSoundFileName));
                 }
             }
         }
 
-        public string SelectedSoundFileName => Path.GetFileName(SelectedSoundFilePath);
+        public string? SelectedSoundFileName => Path.GetFileName(SelectedSoundFilePath);
 
-        public string SelectedImageFilePath {
+        public string? SelectedImageFilePath {
             get => selectedImageFilePath;
             set {
                 if (selectedImageFilePath != value) {
                     selectedImageFilePath = value;
-                    // TODO: Notify property changed.
+                    OnPropertyChanged(nameof(SelectedImageFilePath));
+                    OnPropertyChanged(nameof(SelectedImageFileName));
                 }
             }
         }
 
-        public string SelectedImageFileName => Path.GetFileName(SelectedImageFilePath);
-
-        public string NewSoundFilePath => Path.Combine(
-            FileSystem.Current.AppDataDirectory,
-            SoundboardName!,
-            Path.GetFileName(selectedSoundFilePath));
-
-        public string NewImageFilePath => Path.Combine(
-            FileSystem.Current.AppDataDirectory,
-            SoundboardName!,
-            Path.GetFileName(selectedImageFilePath));
+        public string? SelectedImageFileName => Path.GetFileName(SelectedImageFilePath);
 
         public async Task SelectSoundFileAsync() {
             try {
@@ -77,14 +76,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
                     FileTypes = filePickerFileType,
                 };
 
-                FileResult? fileResult = await FilePicker.PickAsync(pickOptions);
-
-                if (fileResult == null) {
-                    return;
-                }
-
-                selectedSoundFilePath = fileResult.FullPath;
-                selectedSoundFileResult = fileResult;
+                selectedSoundFileResult = await FilePicker.PickAsync(pickOptions);
             } catch (Exception ex) {
                 // TODO: Handle exception.
                 throw;
@@ -92,8 +84,21 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
         }
 
         public async Task SelectImageFileAsync() {
-            // TODO: Implement.
-            await Task.CompletedTask;
+            try {
+                FilePickerFileType filePickerFileType = new FilePickerFileType(
+                    new Dictionary<DevicePlatform, IEnumerable<string>> {
+                        { DevicePlatform.Android, new string[] { "image/jpeg", "image/png" } },
+                    });
+
+                PickOptions pickOptions = new PickOptions() {
+                    FileTypes = filePickerFileType,
+                };
+
+                selectedImageFileResult = await FilePicker.PickAsync(pickOptions);
+            } catch (Exception ex) {
+                // TODO: Handle exception.
+                throw;
+            }
         }
 
         public async Task SaveAsync() {
@@ -102,9 +107,24 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
                 return;
             }
 
-            using (Stream stream = await selectedSoundFileResult!.OpenReadAsync()) {
-                string extension = Path.GetExtension(selectedSoundFilePath);
-                await LocalStorage.AddFileAsync(stream, extension, SoundboardName, SoundName);
+            if (selectedSoundFileResult != null) {
+                using (Stream stream = await selectedSoundFileResult.OpenReadAsync()) {
+                    await soundStorage.SaveSoundFileAsync(
+                        SoundboardName,
+                        SoundName,
+                        Path.GetExtension(selectedSoundFileResult.FileName),
+                        stream);
+                }
+            }
+
+            if (selectedImageFileResult != null) {
+                using (Stream stream = await selectedImageFileResult.OpenReadAsync()) {
+                    await soundStorage.SaveSoundFileAsync(
+                        SoundboardName,
+                        SoundName,
+                        Path.GetExtension(selectedImageFileResult.FileName),
+                        stream);
+                }
             }
         }
     }

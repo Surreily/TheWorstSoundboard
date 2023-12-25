@@ -1,10 +1,18 @@
 ﻿using Surreily.TheWorstSoundboard.Model;
-using Surreily.TheWorstSoundboard.Utility;
+using Surreily.TheWorstSoundboard.Storage.Sound;
 
 namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
     public class SoundboardEditPageViewModel : ViewModelBase {
+        private readonly ISoundStorage soundStorage;
+
         private string? soundboardName;
         private IList<SoundModel>? soundModels;
+
+        public SoundboardEditPageViewModel(
+            ISoundStorage soundStorage) {
+
+            this.soundStorage = soundStorage;
+        }
 
         public string? SoundboardName {
             get => soundboardName;
@@ -27,7 +35,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
         }
 
         public void LoadSoundboard() {
-            SoundModels = LocalStorage.GetSoundModels(SoundboardName!);
+            SoundModels = soundStorage.GetSoundModels(SoundboardName!);
         }
     }
 }

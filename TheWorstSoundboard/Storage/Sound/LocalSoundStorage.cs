@@ -1,4 +1,5 @@
-﻿using Surreily.TheWorstSoundboard.Model;
+﻿using Microsoft.Maui.Storage;
+using Surreily.TheWorstSoundboard.Model;
 
 namespace Surreily.TheWorstSoundboard.Storage.Sound {
     public class LocalSoundStorage : ISoundStorage {
@@ -39,6 +40,25 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
             }
 
             return soundModels;
+        }
+
+        public async Task SaveSoundFileAsync(
+            string soundboardName, string soundName, string extension, Stream stream) {
+
+            string soundboardFolderPath = Path.Combine(
+                FileSystem.Current.AppDataDirectory,
+                SoundboardsFolderName,
+                soundboardName);
+
+            Directory.CreateDirectory(soundboardFolderPath);
+
+            string filePath = Path.Combine(
+                soundboardFolderPath,
+                soundName + extension);
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create)) {
+                await stream.CopyToAsync(fileStream);
+            }
         }
 
         private static bool GetIsSoundFileName(string fileName) {
