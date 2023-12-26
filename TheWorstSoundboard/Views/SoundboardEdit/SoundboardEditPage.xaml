@@ -17,24 +17,16 @@
             x:Name="MediaElement"
             IsVisible="false" />
 
-        <ListView
-            Grid.Row="0"
-            ItemsSource="{Binding SoundModels}"
-            ItemTapped="SoundModelsListView_ItemTapped"
-            SelectionMode="None"
-            HasUnevenRows="True"
-            SeparatorVisibility="None"
-            Footer="">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <HorizontalStackLayout>
-                            <Label Text="{Binding Name}" />
-                        </HorizontalStackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <ScrollView
+            Grid.Row="0">
+            <FlexLayout
+                x:Name="SoundModelsFlexLayout"
+                JustifyContent="Center"
+                AlignContent="Start"
+                AlignItems="Start"
+                Wrap="Wrap">
+            </FlexLayout>
+        </ScrollView>
 
         <Button
             Grid.Row="1"
