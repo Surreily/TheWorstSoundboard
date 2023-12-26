@@ -51,15 +51,19 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
 
         private void CreateTextButton(SoundModel soundModel) {
             Frame frame = new Frame {
-                Background = Colors.HotPink, // TODO: Change.
+                Background = Color.FromRgba(223, 223, 223, 255),
                 Margin = 5,
                 Padding = 0,
                 HeightRequest = ButtonSize,
                 WidthRequest = ButtonSize,
                 CornerRadius = ButtonSize / 2,
                 Content = new Label {
+                    WidthRequest = ButtonSize,
+                    HeightRequest = ButtonSize,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
                     Text = soundModel.Name,
-                    LineBreakMode = LineBreakMode.MiddleTruncation,
+                    TextColor = Color.FromRgba(31, 31, 31, 255),
                 },
             };
 
@@ -84,8 +88,8 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                                 SoundboardName!,
                                 soundModel.Name!,
                                 soundModel.ImageExtension!)),
-                    HeightRequest = 90,
-                    WidthRequest = 90,
+                    HeightRequest = ButtonSize,
+                    WidthRequest = ButtonSize,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center,
                 },
@@ -99,14 +103,19 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
 
         private void CreateAddButton() {
             Frame frame = new Frame {
-                Background = Colors.Gray, // TODO: Change.
+                Background = Color.FromRgba(0, 0, 0, 63),
                 Margin = 5,
                 Padding = 0,
                 HeightRequest = ButtonSize,
                 WidthRequest = ButtonSize,
                 CornerRadius = ButtonSize / 2,
                 Content = new Label {
-                    Text = "Add",
+                    WidthRequest = ButtonSize,
+                    HeightRequest = ButtonSize,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    FontSize = 60,
+                    Text = "+",
                 },
             };
 
