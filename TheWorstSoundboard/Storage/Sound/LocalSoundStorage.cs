@@ -27,15 +27,19 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
 
             foreach (string soundFileName in soundFileNames) {
                 string name = Path.GetFileNameWithoutExtension(soundFileName);
+                string soundExtension = Path.GetExtension(soundFileName);
 
                 string? imageFileName = imageFileNames
                     .FirstOrDefault(imageFileName =>
                         Path.GetFileNameWithoutExtension(imageFileName) == name);
 
-                soundModels.Add(new SoundModel {
-                    Name = name,
-                    SoundFileName = soundFileName,
-                    ImageFileName = imageFileName,
+                string? imageExtension = imageFileName != null
+                    ? Path.GetExtension(imageFileName)
+                    : null;
+
+                soundModels.Add(new SoundModel(name) {
+                    SoundExtension = soundExtension,
+                    ImageExtension = imageExtension,
                 });
             }
 
@@ -78,7 +82,7 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
         }
 
         private static bool GetIsImageFileName(string fileName) {
-            if (fileName.EndsWith(".png")) {
+            if (fileName.EndsWith(".png") || fileName.EndsWith(".jpg")) {
                 return true;
             }
 

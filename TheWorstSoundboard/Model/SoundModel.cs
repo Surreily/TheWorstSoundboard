@@ -1,9 +1,17 @@
 ﻿namespace Surreily.TheWorstSoundboard.Model {
     public class SoundModel {
-        public string? Name { get; set; }
+        public SoundModel(string name) {
+            Name = name;
+        }
 
-        public string? SoundFileName { get; set; }
+        public string Name { get; set; }
 
-        public string? ImageFileName { get; set; }
+        public string? SoundExtension { get; set; }
+
+        public string? ImageExtension { get; set; }
+
+        public bool HasSound => SoundExtension != null;
+
+        public bool HasImage => ImageExtension != null;
     }
 }

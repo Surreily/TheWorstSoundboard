@@ -35,16 +35,31 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             SoundModelsFlexLayout.Clear();
 
             foreach (SoundModel soundModel in ViewModel.SoundModels!) {
-                string soundName = Path.GetFileName(soundModel.SoundFileName!); // TODO: Have this in the SoundModel class
-                string extension = Path.GetExtension(soundModel.SoundFileName!);
-
                 Frame frame = new Frame {
                     Background = Colors.AliceBlue,
                     Margin = 5,
+                    Padding = 0,
                     HeightRequest = 90,
                     WidthRequest = 90,
                     CornerRadius = 45,
                 };
+
+                if (soundModel.HasImage) {
+                    frame.Content = new Image {
+                        Aspect = Aspect.AspectFill,
+                        Source = ImageSource.FromFile(
+                            soundStorage.GetSoundFilePath(
+                                SoundboardName!,
+                                soundModel.Name!,
+                                soundModel.ImageExtension!)),
+                        HeightRequest = 90,
+                        WidthRequest = 90,
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.Center,
+                    };
+
+                    frame.IsClippedToBounds = true;
+                }
 
                 // TODO: This is not a good gesture to use, need something else here.
                 SwipeGestureRecognizer swipeGestureRecognizer = new SwipeGestureRecognizer {
@@ -52,7 +67,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 };
 
                 swipeGestureRecognizer.Swiped += async (sender, e) => {
-                    await NavigateToSoundEditPage(soundName);
+                    await NavigateToSoundEditPage(soundModel.Name);
                 };
 
                 TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
@@ -61,14 +76,6 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
 
                 frame.GestureRecognizers.Add(tapGestureRecognizer);
                 frame.GestureRecognizers.Add(swipeGestureRecognizer);
-
-                if (soundModel.ImageFileName != null) {
-                    Image image = new Image {
-                        Source = new Uri(soundStorage.GetSoundFilePath(SoundboardName!, soundName, extension)),
-                    };
-
-                    frame.Content = image;
-                }
 
                 SoundModelsFlexLayout.Add(frame);
             }
@@ -83,10 +90,12 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
         }
 
         private void PlaySound(SoundModel soundModel) {
-            string soundName = Path.GetFileNameWithoutExtension(soundModel.SoundFileName)!;
-            string extension = Path.GetExtension(soundModel.SoundFileName)!;
+            if (!soundModel.HasSound) {
+                return;
+            }
 
-            MediaElement.Source = MediaSource.FromFile(ViewModel.GetSoundFilePath(soundName, extension));
+            MediaElement.Source = MediaSource.FromFile(
+                ViewModel.GetSoundFilePath(soundModel.Name, soundModel.SoundExtension!));
             MediaElement.SeekTo(TimeSpan.Zero);
             MediaElement.Play();
         }
