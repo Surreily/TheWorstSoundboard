@@ -2,8 +2,10 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="Surreily.TheWorstSoundboard.Views.SoundboardEdit.SoundboardEditPage"
     Title="Soundboard">
+
     <Grid
         Margin="10">
         <Grid.RowDefinitions>
@@ -11,9 +13,14 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
+        <toolkit:MediaElement
+            x:Name="MediaElement"
+            IsVisible="false" />
+
         <ListView
             Grid.Row="0"
             ItemsSource="{Binding SoundModels}"
+            ItemTapped="SoundModelsListView_ItemTapped"
             SelectionMode="None"
             HasUnevenRows="True"
             SeparatorVisibility="None"

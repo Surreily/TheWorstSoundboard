@@ -42,6 +42,14 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
             return soundModels;
         }
 
+        public string GetSoundFilePath(string soundboardName, string soundName, string extension) {
+            return Path.Combine(
+                FileSystem.Current.AppDataDirectory,
+                SoundboardsFolderName,
+                soundboardName,
+                soundName + extension);
+        }
+
         public async Task SaveSoundFileAsync(
             string soundboardName, string soundName, string extension, Stream stream) {
 

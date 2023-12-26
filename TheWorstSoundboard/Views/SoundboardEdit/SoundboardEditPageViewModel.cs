@@ -37,5 +37,9 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
         public void LoadSoundboard() {
             SoundModels = soundStorage.GetSoundModels(SoundboardName!);
         }
+
+        public string GetSoundFilePath(string soundName, string extension) {
+            return soundStorage.GetSoundFilePath(SoundboardName!, soundName, extension);
+        }
     }
 }

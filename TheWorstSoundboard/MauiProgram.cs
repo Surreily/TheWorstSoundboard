@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using Surreily.TheWorstSoundboard.Storage.Sound;
 using Surreily.TheWorstSoundboard.Storage.Soundboard;
 using Surreily.TheWorstSoundboard.Views.SoundboardEdit;
@@ -11,10 +12,9 @@ namespace Surreily.TheWorstSoundboard {
             var builder = MauiApp.CreateBuilder()
                 .RegisterViews()
                 .RegisterViewModels()
-                .RegisterStorage();
-
-            builder
+                .RegisterStorage()
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkitMediaElement()
                 .ConfigureFonts(fonts => {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
