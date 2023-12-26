@@ -6,15 +6,18 @@
     Title="Sound">
     <VerticalStackLayout>
         <Entry
+            Text="{Binding SoundName}" />
+
+        <Entry
             IsEnabled="False"
-            Text="{Binding ViewModel.SelectedSoundFileName}" />
+            Text="{Binding SelectedSoundFileName}" />
         <Button
             Text="Select"
             Clicked="SelectSoundButton_Clicked" />
 
         <Entry
             IsEnabled="False"
-            Text="{Binding ViewModel.SelectedImageFileName}" />
+            Text="{Binding SelectedImageFileName}" />
         <Button
             Text="Select"
             Clicked="SelectImageButton_Clicked" />

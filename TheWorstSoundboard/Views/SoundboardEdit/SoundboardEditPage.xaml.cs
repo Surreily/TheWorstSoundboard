@@ -34,12 +34,10 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             MediaElement.Play();
         }
 
-        private async void TemporaryButton_Clicked(object sender, EventArgs e) {
-            // TODO: Remove this button and method!
-
+        private async void AddButton_Clicked(object sender, EventArgs e) {
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "SoundboardName", "Dank Memes" },
-                { "SoundName", "Sad Violin" },
+                { "SoundboardName", SoundboardName! },
+                { "SoundName", "New Sound" },
             };
 
             await Shell.Current.GoToAsync("Sounds/Edit", parameters);
