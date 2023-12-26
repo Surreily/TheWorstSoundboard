@@ -6,6 +6,8 @@ using Surreily.TheWorstSoundboard.Storage.Sound;
 namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
     [QueryProperty(nameof(SoundboardName), "SoundboardName")]
     public partial class SoundboardEditPage : ContentPage {
+        private const int ButtonSize = 90;
+
         private readonly ISoundStorage soundStorage;
 
         public string? SoundboardName {
@@ -31,55 +33,118 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             }
         }
 
+        #region Create sound buttons
+
         private void CreateSoundButtons() {
             SoundModelsFlexLayout.Clear();
 
             foreach (SoundModel soundModel in ViewModel.SoundModels!) {
-                Frame frame = new Frame {
-                    Background = Colors.AliceBlue,
-                    Margin = 5,
-                    Padding = 0,
-                    HeightRequest = 90,
-                    WidthRequest = 90,
-                    CornerRadius = 45,
-                };
-
                 if (soundModel.HasImage) {
-                    frame.Content = new Image {
-                        Aspect = Aspect.AspectFill,
-                        Source = ImageSource.FromFile(
+                    CreateImageButton(soundModel);
+                } else {
+                    CreateTextButton(soundModel);
+                }
+            }
+
+            CreateAddButton();
+        }
+
+        private void CreateTextButton(SoundModel soundModel) {
+            Frame frame = new Frame {
+                Background = Colors.HotPink, // TODO: Change.
+                Margin = 5,
+                Padding = 0,
+                HeightRequest = ButtonSize,
+                WidthRequest = ButtonSize,
+                CornerRadius = ButtonSize / 2,
+                Content = new Label {
+                    Text = soundModel.Name,
+                    LineBreakMode = LineBreakMode.MiddleTruncation,
+                },
+            };
+
+            AddPlaySoundGestureRecogniser(soundModel, frame);
+            AddEditSoundGestureRecogniser(soundModel, frame);
+
+            SoundModelsFlexLayout.Add(frame);
+        }
+
+        private void CreateImageButton(SoundModel soundModel) {
+            Frame frame = new Frame {
+                Margin = 5,
+                Padding = 0,
+                HeightRequest = ButtonSize,
+                WidthRequest = ButtonSize,
+                CornerRadius = ButtonSize / 2,
+                IsClippedToBounds = true,
+                Content = new Image {
+                    Aspect = Aspect.AspectFill,
+                    Source = ImageSource.FromFile(
                             soundStorage.GetSoundFilePath(
                                 SoundboardName!,
                                 soundModel.Name!,
                                 soundModel.ImageExtension!)),
-                        HeightRequest = 90,
-                        WidthRequest = 90,
-                        VerticalOptions = LayoutOptions.Center,
-                        HorizontalOptions = LayoutOptions.Center,
-                    };
+                    HeightRequest = 90,
+                    WidthRequest = 90,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                },
+            };
 
-                    frame.IsClippedToBounds = true;
-                }
+            AddPlaySoundGestureRecogniser(soundModel, frame);
+            AddEditSoundGestureRecogniser(soundModel, frame);
 
-                // TODO: This is not a good gesture to use, need something else here.
-                SwipeGestureRecognizer swipeGestureRecognizer = new SwipeGestureRecognizer {
-                    Direction = SwipeDirection.Right,
-                };
-
-                swipeGestureRecognizer.Swiped += async (sender, e) => {
-                    await NavigateToSoundEditPage(soundModel.Name);
-                };
-
-                TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
-
-                tapGestureRecognizer.Tapped += (sender, e) => PlaySound(soundModel);
-
-                frame.GestureRecognizers.Add(tapGestureRecognizer);
-                frame.GestureRecognizers.Add(swipeGestureRecognizer);
-
-                SoundModelsFlexLayout.Add(frame);
-            }
+            SoundModelsFlexLayout.Add(frame);
         }
+
+        private void CreateAddButton() {
+            Frame frame = new Frame {
+                Background = Colors.Gray, // TODO: Change.
+                Margin = 5,
+                Padding = 0,
+                HeightRequest = ButtonSize,
+                WidthRequest = ButtonSize,
+                CornerRadius = ButtonSize / 2,
+                Content = new Label {
+                    Text = "Add",
+                },
+            };
+
+            AddCreateSoundGestureRecogniser(frame);
+
+            SoundModelsFlexLayout.Add(frame);
+        }
+
+        private void AddPlaySoundGestureRecogniser(SoundModel soundModel, Frame frame) {
+            TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+
+            tapGestureRecognizer.Tapped += (sender, e) =>
+                PlaySound(soundModel);
+
+            frame.GestureRecognizers.Add(tapGestureRecognizer);
+        }
+
+        private void AddEditSoundGestureRecogniser(SoundModel soundModel, Frame frame) {
+            SwipeGestureRecognizer swipeGestureRecognizer = new SwipeGestureRecognizer {
+                Direction = SwipeDirection.Right,
+            };
+
+            swipeGestureRecognizer.Swiped += async (sender, e) =>
+                await NavigateToSoundEditPage(soundModel.Name);
+
+            frame.GestureRecognizers.Add(swipeGestureRecognizer);
+        }
+
+        private void AddCreateSoundGestureRecogniser(Frame frame) {
+            TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+
+            tapGestureRecognizer.Tapped += async (sender, e) =>
+                await NavigateToSoundEditPage();
+
+            frame.GestureRecognizers.Add(tapGestureRecognizer);
+        }
+
+        #endregion
 
         public SoundboardEditPageViewModel ViewModel => (SoundboardEditPageViewModel)BindingContext;
 
