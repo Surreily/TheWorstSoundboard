@@ -29,6 +29,7 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="3"
+            Margin="0,0,0,5"
             Text="Name" />
         <Entry
             Grid.Row="1"
@@ -40,12 +41,19 @@
             Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="3"
-            Text="Sound File (MP3)" />
-        <Entry
+            Margin="0,0,0,5"
+            Text="Sound File (MP3)"/>
+        <Frame
             Grid.Row="4"
             Grid.Column="0"
-            IsEnabled="False"
-            Text="{Binding SelectedSoundFileName}" />
+            Padding="0">
+            <Label
+                BackgroundColor="{StaticResource Gray600}"
+                Padding="15,0,0,0"
+                VerticalTextAlignment="Center"
+                FontSize="16"
+                Text="{Binding SelectedSoundFileName}" />
+        </Frame>
         <Button
             Grid.Row="4"
             Grid.Column="2"
@@ -56,12 +64,19 @@
             Grid.Row="6"
             Grid.Column="0"
             Grid.ColumnSpan="3"
+            Margin="0,0,0,5"
             Text="Image File (PNG, JPG)" />
-        <Entry
+        <Frame
             Grid.Row="7"
             Grid.Column="0"
-            IsEnabled="False"
-            Text="{Binding SelectedImageFileName}" />
+            Padding="0">
+            <Label
+                BackgroundColor="{StaticResource Gray600}"
+                Padding="15,0,0,0"
+                VerticalTextAlignment="Center"
+                FontSize="16"
+                Text="{Binding SelectedImageFileName}" />
+        </Frame>
         <Button
             Grid.Row="7"
             Grid.Column="2"
