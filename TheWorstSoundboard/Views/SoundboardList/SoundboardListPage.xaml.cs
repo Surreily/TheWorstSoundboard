@@ -53,9 +53,8 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardList {
         private async void SoundboardModelsListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             SoundboardModel model = (SoundboardModel)e.Item;
 
-            // TODO: Pass in correct soundboard name.
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "SoundboardName", "Dank Memes" },
+                { "SoundboardName", model.Name! },
             };
 
             await Shell.Current.GoToAsync("Soundboards/Edit", parameters);
