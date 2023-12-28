@@ -4,26 +4,75 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Surreily.TheWorstSoundboard.Views.SoundEdit.SoundEditPage"
     Title="Sound">
-    <VerticalStackLayout>
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Text="Name" />
         <Entry
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
             Text="{Binding SoundName}" />
 
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Text="Sound File (MP3)" />
         <Entry
+            Grid.Row="4"
+            Grid.Column="0"
             IsEnabled="False"
             Text="{Binding SelectedSoundFileName}" />
         <Button
+            Grid.Row="4"
+            Grid.Column="2"
             Text="Select"
             Clicked="SelectSoundButton_Clicked" />
 
+        <Label
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Text="Image File (PNG, JPG)" />
         <Entry
+            Grid.Row="7"
+            Grid.Column="0"
             IsEnabled="False"
             Text="{Binding SelectedImageFileName}" />
         <Button
+            Grid.Row="7"
+            Grid.Column="2"
             Text="Select"
             Clicked="SelectImageButton_Clicked" />
 
         <Button
+            Grid.Row="9"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
             Text="Save"
             Clicked="SaveButton_Click" />
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
