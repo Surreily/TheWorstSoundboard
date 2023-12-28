@@ -1,4 +1,5 @@
-﻿using Surreily.TheWorstSoundboard.Storage.Sound;
+﻿using Surreily.TheWorstSoundboard.Exceptions;
+using Surreily.TheWorstSoundboard.Storage.Sound;
 
 namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
     public class SoundEditPageViewModel : ViewModelBase {
@@ -107,26 +108,31 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
 
         public async Task SaveAsync() {
             if (SoundboardName == null || SoundName == null) {
-                // TODO: Show error message.
-                return;
+                throw new InvalidOperationException("SoundboardName or SoundName cannot be null.");
             }
 
-            if (selectedSoundFileResult != null) {
-                using (Stream stream = await selectedSoundFileResult.OpenReadAsync()) {
-                    await soundStorage.SaveSoundFileAsync(
-                        SoundboardName,
-                        SoundName,
-                        Path.GetExtension(selectedSoundFileResult.FileName),
-                        stream);
-                }
+            if (string.IsNullOrWhiteSpace(SoundName)) {
+                throw new ValidationFailedException("Name is required.");
+            }
+
+            if (SelectedSoundFileResult == null) {
+                throw new ValidationFailedException("Sound file is required.");
+            }
+
+            using (Stream stream = await selectedSoundFileResult!.OpenReadAsync()) {
+                await soundStorage.SaveSoundFileAsync(
+                    SoundboardName,
+                    SoundName,
+                    Path.GetExtension(selectedSoundFileResult.FileName),
+                    stream);
             }
 
             if (selectedImageFileResult != null) {
-                using (Stream stream = await selectedImageFileResult.OpenReadAsync()) {
+                using (Stream stream = await selectedImageFileResult!.OpenReadAsync()) {
                     await soundStorage.SaveSoundFileAsync(
                         SoundboardName,
                         SoundName,
-                        Path.GetExtension(selectedImageFileResult.FileName),
+                        Path.GetExtension(selectedImageFileResult!.FileName),
                         stream);
                 }
             }

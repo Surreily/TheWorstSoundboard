@@ -1,3 +1,5 @@
+using Surreily.TheWorstSoundboard.Exceptions;
+
 namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
     [QueryProperty(nameof(SoundboardName), "SoundboardName")]
     [QueryProperty(nameof(SoundName), "SoundName")]
@@ -30,7 +32,11 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
         }
 
         private async void SaveButton_Click(object sender, EventArgs e) {
-            await ViewModel.SaveAsync();
+            try {
+                await ViewModel.SaveAsync();
+            } catch (ValidationFailedException ex) {
+                await DisplayAlert("Error", ex.Message, "OK");
+            }
         }
     }
 }
