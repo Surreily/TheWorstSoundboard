@@ -1,4 +1,6 @@
+using CommunityToolkit.Maui.Storage;
 using Surreily.TheWorstSoundboard.Model;
+
 
 namespace Surreily.TheWorstSoundboard.Views.SoundboardList {
     public partial class SoundboardListPage : ContentPage {
@@ -34,6 +36,18 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardList {
         private async void CreateButton_Clicked(object sender, EventArgs e) {
             await CreateSoundboard();
             OnPropertyChanged(nameof(ViewModel.SoundboardModels));
+        }
+
+        private async void ImportButton_Clicked(object sender, EventArgs e) {
+            FolderPickerResult folderPickerResult = await FolderPicker.Default.PickAsync();
+
+            if (folderPickerResult == null || !folderPickerResult.IsSuccessful) {
+                return;
+            }
+
+            string folderPath = folderPickerResult.Folder!.Path;
+
+            await ViewModel.ImportSoundboard(folderPath);
         }
 
         private async void SoundboardModelsListView_ItemTapped(object sender, ItemTappedEventArgs e) {

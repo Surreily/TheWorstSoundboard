@@ -10,8 +10,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
         <ListView
             Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
             ItemsSource="{Binding SoundboardModels}"
             SelectionMode="None"
             HasUnevenRows="True"
@@ -47,7 +55,14 @@
 
         <Button
             Grid.Row="1"
+            Grid.Column="0"
             Text="Add"
             Clicked="CreateButton_Clicked" />
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="2"
+            Text="Import"
+            Clicked="ImportButton_Clicked" />
     </Grid>
 </ContentPage>
