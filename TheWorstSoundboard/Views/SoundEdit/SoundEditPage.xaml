@@ -97,12 +97,14 @@
             <Button
                 Grid.Column="0"
                 Text="Delete"
-                Clicked="DeleteButton_Click" />
+                Clicked="DeleteButton_Click"
+                IsEnabled="{Binding CanDelete}" />
 
             <Button
                 Grid.Column="2"
                 Text="Save"
-                Clicked="SaveButton_Click" />
+                Clicked="SaveButton_Click"
+                IsEnabled="{Binding CanSave}" />
         </Grid>
     </Grid>
 </ContentPage>

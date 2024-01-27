@@ -177,7 +177,8 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
         private async Task NavigateToSoundEditPage(string? soundName = null) {
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "SoundboardName", SoundboardName! },
-                { "SoundName", soundName ?? "New Sound" },
+                { "SoundName", soundName ?? string.Empty },
+                { "IsNew", soundName == null },
             };
 
             await Shell.Current.GoToAsync("Sounds/Edit", parameters);

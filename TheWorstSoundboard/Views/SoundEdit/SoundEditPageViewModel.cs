@@ -7,6 +7,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
 
         private string? soundboardName;
         private string? soundName;
+        private bool isNew;
         private FileResult? selectedSoundFileResult;
         private FileResult? selectedImageFileResult;
 
@@ -14,8 +15,6 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
             ISoundStorage soundStorage) {
 
             this.soundStorage = soundStorage;
-
-            SoundName = "New Sound";
         }
 
         public string? SoundboardName {
@@ -34,6 +33,17 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
                 if (soundName != value) {
                     soundName = value;
                     OnPropertyChanged(nameof(SoundName));
+                }
+            }
+        }
+
+        public bool IsNew {
+            get => isNew;
+            set {
+                if (isNew != value) {
+                    isNew = value;
+                    OnPropertyChanged(nameof(IsNew));
+                    OnPropertyChanged(nameof(CanDelete));
                 }
             }
         }
@@ -69,6 +79,10 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
             SelectedImageFileResult != null
                 ? SelectedImageFileResult!.FileName
                 : null;
+
+        public bool CanDelete => !IsNew;
+
+        public bool CanSave => true;
 
         public async Task SelectSoundFileAsync() {
             try {
@@ -136,6 +150,8 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
                         stream);
                 }
             }
+
+            IsNew = false;
         }
 
         public void Delete() {

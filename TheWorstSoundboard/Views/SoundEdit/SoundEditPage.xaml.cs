@@ -3,6 +3,7 @@ using Surreily.TheWorstSoundboard.Exceptions;
 namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
     [QueryProperty(nameof(SoundboardName), "SoundboardName")]
     [QueryProperty(nameof(SoundName), "SoundName")]
+    [QueryProperty(nameof(IsNew), "IsNew")]
     public partial class SoundEditPage : ContentPage {
         public SoundEditPage(
             SoundEditPageViewModel viewModel) {
@@ -21,6 +22,11 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
         public string? SoundName {
             get => ViewModel.SoundName;
             set => ViewModel.SoundName = value;
+        }
+
+        public bool IsNew {
+            get => ViewModel.IsNew;
+            set => ViewModel.IsNew = value;
         }
 
         private async void SelectSoundButton_Clicked(object sender, EventArgs e) {
