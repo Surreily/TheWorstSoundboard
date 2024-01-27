@@ -174,10 +174,6 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             MediaElement.Play();
         }
 
-        private async void AddButton_Clicked(object sender, EventArgs e) {
-            await NavigateToSoundEditPage();
-        }
-
         private async Task NavigateToSoundEditPage(string? soundName = null) {
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "SoundboardName", SoundboardName! },
