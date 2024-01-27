@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using Surreily.TheWorstSoundboard.Exceptions;
 
 namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
@@ -49,11 +51,15 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
             }
 
             ViewModel.Delete();
+
+            await Shell.Current.Navigation.PopAsync();
         }
 
         private async void SaveButton_Click(object sender, EventArgs e) {
             try {
                 await ViewModel.SaveAsync();
+
+                await Toast.Make("Sound saved.", ToastDuration.Short).Show();
             } catch (ValidationFailedException ex) {
                 await DisplayAlert("Error", ex.Message, "OK");
             }
