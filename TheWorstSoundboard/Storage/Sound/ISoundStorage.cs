@@ -7,5 +7,7 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
         string GetSoundFilePath(string soundboardName, string soundName, string extension);
 
         Task SaveSoundFileAsync(string soundboardName, string soundName, string extension, Stream stream);
+
+        void DeleteSound(string soundboardName, string soundName);
     }
 }

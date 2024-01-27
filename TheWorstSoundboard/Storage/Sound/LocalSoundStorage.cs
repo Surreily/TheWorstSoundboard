@@ -5,7 +5,7 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
     public class LocalSoundStorage : ISoundStorage {
         private const string SoundboardsFolderName = "Soundboards";
 
-        private FolderUtility folderUtility;
+        private readonly FolderUtility folderUtility;
 
         public LocalSoundStorage(FolderUtility folderUtility) {
             this.folderUtility = folderUtility;
@@ -31,10 +31,7 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
         public async Task SaveSoundFileAsync(
             string soundboardName, string soundName, string extension, Stream stream) {
 
-            string soundboardFolderPath = Path.Combine(
-                FileSystem.Current.AppDataDirectory,
-                SoundboardsFolderName,
-                soundboardName);
+            string soundboardFolderPath = GetSoundboardFolderPath(soundboardName);
 
             Directory.CreateDirectory(soundboardFolderPath);
 
@@ -45,6 +42,23 @@ namespace Surreily.TheWorstSoundboard.Storage.Sound {
             using (FileStream fileStream = new FileStream(filePath, FileMode.Create)) {
                 await stream.CopyToAsync(fileStream);
             }
+        }
+
+        public void DeleteSound(string soundboardName, string soundName) {
+            string soundboardFolderPath = GetSoundboardFolderPath(soundboardName);
+
+            foreach (string soundFileName in Directory.EnumerateFiles(soundboardFolderPath)) {
+                if (Path.GetFileNameWithoutExtension(soundFileName) == soundName) {
+                    File.Delete(Path.Combine(soundboardFolderPath, soundFileName));
+                }
+            }
+        }
+
+        private string GetSoundboardFolderPath(string soundboardName) {
+            return Path.Combine(
+                FileSystem.Current.AppDataDirectory,
+                SoundboardsFolderName,
+                soundboardName);
         }
     }
 }
