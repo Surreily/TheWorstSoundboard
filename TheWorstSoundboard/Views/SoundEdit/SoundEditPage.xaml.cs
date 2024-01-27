@@ -31,6 +31,20 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
             await ViewModel.SelectImageFileAsync();
         }
 
+        private async void DeleteButton_Click(object sender, EventArgs e) {
+            bool result = await DisplayAlert(
+                "Confirm Delete",
+                "Are you sure you want to delete this sound?",
+                "Yes",
+                "No");
+
+            if (!result) {
+                return;
+            }
+
+            ViewModel.Delete();
+        }
+
         private async void SaveButton_Click(object sender, EventArgs e) {
             try {
                 await ViewModel.SaveAsync();
@@ -38,5 +52,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
                 await DisplayAlert("Error", ex.Message, "OK");
             }
         }
+
+        
     }
 }

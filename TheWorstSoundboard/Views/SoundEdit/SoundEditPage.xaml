@@ -83,11 +83,26 @@
             Text="Select"
             Clicked="SelectImageButton_Clicked" />
 
-        <Button
+        <Grid
             Grid.Row="9"
             Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Text="Save"
-            Clicked="SaveButton_Click" />
+            Grid.ColumnSpan="3">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Text="Delete"
+                Clicked="DeleteButton_Click" />
+
+            <Button
+                Grid.Column="2"
+                Text="Save"
+                Clicked="SaveButton_Click" />
+        </Grid>
     </Grid>
 </ContentPage>

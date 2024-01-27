@@ -137,5 +137,9 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
                 }
             }
         }
+
+        public void Delete() {
+            soundStorage.DeleteSound(SoundboardName!, SoundName!);
+        }
     }
 }
