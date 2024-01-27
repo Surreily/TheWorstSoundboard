@@ -22,11 +22,11 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardList {
                 "Create Soundboard",
                 "Enter a title for your new soundboard.");
 
-            name = name.Trim();
-
             if (string.IsNullOrWhiteSpace(name)) {
                 return;
             }
+
+            name = name.Trim();
 
             ViewModel.CreateSoundboard(name);
         }
