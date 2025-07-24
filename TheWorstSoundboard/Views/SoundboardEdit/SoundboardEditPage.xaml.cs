@@ -9,6 +9,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
         private const int ButtonSize = 90;
 
         private readonly ISoundStorage soundStorage;
+        private bool IsPlaying { get; set; }
 
         public string? SoundboardName {
             get => ViewModel.SoundboardName;
@@ -168,10 +169,18 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 return;
             }
 
-            MediaElement.Source = MediaSource.FromFile(
+            if (IsPlaying)
+            {
+                MediaElement.Stop();
+            } 
+            else
+            {
+                MediaElement.Source = MediaSource.FromFile(
                 ViewModel.GetSoundFilePath(soundModel.Name, soundModel.SoundExtension!));
-            MediaElement.SeekTo(TimeSpan.Zero);
-            MediaElement.Play();
+                MediaElement.SeekTo(TimeSpan.Zero);
+                MediaElement.Play();
+            }
+            IsPlaying = !IsPlaying;
         }
 
         private async Task NavigateToSoundEditPage(string? soundName = null) {
