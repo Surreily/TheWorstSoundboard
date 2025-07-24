@@ -10,6 +10,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
 
         private readonly ISoundStorage soundStorage;
         private bool IsPlaying { get; set; }
+        private SoundModel? Playing { get; set; }
 
         public string? SoundboardName {
             get => ViewModel.SoundboardName;
@@ -40,7 +41,10 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             SoundModelsFlexLayout.Clear();
 
             foreach (SoundModel soundModel in ViewModel.SoundModels!) {
-                if (soundModel.HasImage) {
+                if (Playing != null && Playing == soundModel)
+                {
+                    CreateStopButton(soundModel);
+                } else if (soundModel.HasImage) {
                     CreateImageButton(soundModel);
                 } else {
                     CreateTextButton(soundModel);
@@ -98,6 +102,32 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
 
             AddPlaySoundGestureRecogniser(soundModel, frame);
             AddEditSoundGestureRecogniser(soundModel, frame);
+
+            SoundModelsFlexLayout.Add(frame);
+        }
+
+        private void CreateStopButton(SoundModel soundModel)
+        {
+            Frame frame = new Frame
+            {
+                Background = Color.FromRgba(0, 0, 0, 63),
+                Margin = 5,
+                Padding = 0,
+                HeightRequest = ButtonSize,
+                WidthRequest = ButtonSize,
+                CornerRadius = ButtonSize / 2,
+                Content = new Label
+                {
+                    WidthRequest = ButtonSize,
+                    HeightRequest = ButtonSize,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "STOP",
+                    TextColor = Color.FromRgba(31, 31, 31, 255),
+                },
+            };
+
+            AddPlaySoundGestureRecogniser(soundModel, frame);
 
             SoundModelsFlexLayout.Add(frame);
         }
@@ -172,6 +202,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             if (IsPlaying)
             {
                 MediaElement.Stop();
+                Playing = null;
             } 
             else
             {
@@ -179,8 +210,10 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 ViewModel.GetSoundFilePath(soundModel.Name, soundModel.SoundExtension!));
                 MediaElement.SeekTo(TimeSpan.Zero);
                 MediaElement.Play();
+                Playing = soundModel;
             }
             IsPlaying = !IsPlaying;
+            CreateSoundButtons();
         }
 
         private async Task NavigateToSoundEditPage(string? soundName = null) {
