@@ -9,6 +9,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
         private const int ButtonSize = 90;
 
         private readonly ISoundStorage soundStorage;
+        private SoundModel? Playing { get; set; }
 
         public string? SoundboardName {
             get => ViewModel.SoundboardName;
@@ -39,7 +40,9 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             SoundModelsFlexLayout.Clear();
 
             foreach (SoundModel soundModel in ViewModel.SoundModels!) {
-                if (soundModel.HasImage) {
+                if (Playing != null && Playing == soundModel) {
+                    CreateStopButton(soundModel);
+                } else if (soundModel.HasImage) {
                     CreateImageButton(soundModel);
                 } else {
                     CreateTextButton(soundModel);
@@ -84,10 +87,10 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 Content = new Image {
                     Aspect = Aspect.AspectFill,
                     Source = ImageSource.FromFile(
-                            soundStorage.GetSoundFilePath(
-                                SoundboardName!,
-                                soundModel.Name!,
-                                soundModel.ImageExtension!)),
+                        soundStorage.GetSoundFilePath(
+                            SoundboardName!,
+                            soundModel.Name!,
+                            soundModel.ImageExtension!)),
                     HeightRequest = ButtonSize,
                     WidthRequest = ButtonSize,
                     VerticalOptions = LayoutOptions.Center,
@@ -97,6 +100,30 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
 
             AddPlaySoundGestureRecogniser(soundModel, frame);
             AddEditSoundGestureRecogniser(soundModel, frame);
+
+            SoundModelsFlexLayout.Add(frame);
+        }
+
+        private void CreateStopButton(SoundModel soundModel) {
+            Frame frame = new Frame {
+                Background = Color.FromRgba(0, 0, 0, 63),
+                Margin = 5,
+                Padding = 0,
+                HeightRequest = ButtonSize,
+                WidthRequest = ButtonSize,
+                CornerRadius = ButtonSize / 2,
+                Content = new Label {
+                    WidthRequest = ButtonSize,
+                    HeightRequest = ButtonSize,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "STOP",
+                    TextColor = Color.FromRgba(31, 31, 31, 255),
+                },
+            };
+
+            // TODO: This should probably add a "stop sound gesture recogniser".
+            AddPlaySoundGestureRecogniser(soundModel, frame);
 
             SoundModelsFlexLayout.Add(frame);
         }
@@ -168,10 +195,19 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 return;
             }
 
-            MediaElement.Source = MediaSource.FromFile(
+            if (soundModel == Playing) {
+                MediaElement.Stop();
+                Playing = null;
+            } else {
+                MediaElement.Source = MediaSource.FromFile(
                 ViewModel.GetSoundFilePath(soundModel.Name, soundModel.SoundExtension!));
-            MediaElement.SeekTo(TimeSpan.Zero);
-            MediaElement.Play();
+                MediaElement.SeekTo(TimeSpan.Zero);
+                MediaElement.Play();
+                Playing = soundModel;
+            }
+
+            // TODO: This is not efficient as it will regenerate the entire button grid.
+            CreateSoundButtons();
         }
 
         private async Task NavigateToSoundEditPage(string? soundName = null) {
