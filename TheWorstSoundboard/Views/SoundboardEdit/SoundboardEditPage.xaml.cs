@@ -9,7 +9,6 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
         private const int ButtonSize = 90;
 
         private readonly ISoundStorage soundStorage;
-        private bool IsPlaying { get; set; }
         private SoundModel? Playing { get; set; }
 
         public string? SoundboardName {
@@ -199,7 +198,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 return;
             }
 
-            if (IsPlaying)
+            if (MediaElement.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Playing)
             {
                 MediaElement.Stop();
                 Playing = null;
@@ -212,7 +211,6 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 MediaElement.Play();
                 Playing = soundModel;
             }
-            IsPlaying = !IsPlaying;
             CreateSoundButtons();
         }
 
