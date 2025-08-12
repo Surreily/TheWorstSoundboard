@@ -105,18 +105,15 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             SoundModelsFlexLayout.Add(frame);
         }
 
-        private void CreateStopButton(SoundModel soundModel)
-        {
-            Frame frame = new Frame
-            {
+        private void CreateStopButton(SoundModel soundModel) {
+            Frame frame = new Frame {
                 Background = Color.FromRgba(0, 0, 0, 63),
                 Margin = 5,
                 Padding = 0,
                 HeightRequest = ButtonSize,
                 WidthRequest = ButtonSize,
                 CornerRadius = ButtonSize / 2,
-                Content = new Label
-                {
+                Content = new Label {
                     WidthRequest = ButtonSize,
                     HeightRequest = ButtonSize,
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -198,13 +195,10 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 return;
             }
 
-            if (soundModel == Playing)
-            {
+            if (soundModel == Playing) {
                 MediaElement.Stop();
                 Playing = null;
-            } 
-            else
-            {
+            } else {
                 MediaElement.Source = MediaSource.FromFile(
                 ViewModel.GetSoundFilePath(soundModel.Name, soundModel.SoundExtension!));
                 MediaElement.SeekTo(TimeSpan.Zero);
