@@ -40,8 +40,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
             SoundModelsFlexLayout.Clear();
 
             foreach (SoundModel soundModel in ViewModel.SoundModels!) {
-                if (Playing != null && Playing == soundModel)
-                {
+                if (Playing != null && Playing == soundModel) {
                     CreateStopButton(soundModel);
                 } else if (soundModel.HasImage) {
                     CreateImageButton(soundModel);
@@ -88,10 +87,10 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 Content = new Image {
                     Aspect = Aspect.AspectFill,
                     Source = ImageSource.FromFile(
-                            soundStorage.GetSoundFilePath(
-                                SoundboardName!,
-                                soundModel.Name!,
-                                soundModel.ImageExtension!)),
+                        soundStorage.GetSoundFilePath(
+                            SoundboardName!,
+                            soundModel.Name!,
+                            soundModel.ImageExtension!)),
                     HeightRequest = ButtonSize,
                     WidthRequest = ButtonSize,
                     VerticalOptions = LayoutOptions.Center,
@@ -123,6 +122,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 },
             };
 
+            // TODO: This should probably add a "stop sound gesture recogniser".
             AddPlaySoundGestureRecogniser(soundModel, frame);
 
             SoundModelsFlexLayout.Add(frame);
