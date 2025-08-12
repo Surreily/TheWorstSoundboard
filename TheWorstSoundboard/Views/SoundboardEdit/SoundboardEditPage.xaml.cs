@@ -211,6 +211,8 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 MediaElement.Play();
                 Playing = soundModel;
             }
+
+            // TODO: This is not efficient as it will regenerate the entire button grid.
             CreateSoundButtons();
         }
 
