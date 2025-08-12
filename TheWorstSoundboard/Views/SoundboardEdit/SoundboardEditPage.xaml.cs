@@ -198,7 +198,7 @@ namespace Surreily.TheWorstSoundboard.Views.SoundboardEdit {
                 return;
             }
 
-            if (MediaElement.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Playing)
+            if (soundModel == Playing)
             {
                 MediaElement.Stop();
                 Playing = null;
