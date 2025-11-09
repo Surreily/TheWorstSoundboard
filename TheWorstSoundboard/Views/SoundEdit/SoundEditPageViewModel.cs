@@ -89,6 +89,8 @@ namespace Surreily.TheWorstSoundboard.Views.SoundEdit {
                 FilePickerFileType filePickerFileType = new FilePickerFileType(
                     new Dictionary<DevicePlatform, IEnumerable<string>> {
                         { DevicePlatform.Android, new string[] { "audio/mpeg" } },
+                        { DevicePlatform.iOS, new string[] { "public.mp3" } },
+                        { DevicePlatform.WinUI, new string[] { ".mp3" } },
                     });
 
                 PickOptions pickOptions = new PickOptions() {
